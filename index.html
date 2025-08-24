@@ -3,10 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matriz de Prioridades (Eisenhower)</title>
+        <title>Matriz de Eisenhower: prioriza tus tareas por urgencia e importancia</title>
     <link rel="icon" type="image/x-icon" href="assets/icon.ico">
     <link rel="shortcut icon" href="assets/icon.ico">
     <link rel="apple-touch-icon" href="assets/icon.png">
+        <!-- Primary SEO -->
+        <meta name="description" content="Usa la Matriz de Eisenhower online para priorizar tareas según su urgencia e importancia. Gratis y sin registro: arrastra y suelta, guarda como imagen y mejora tu productividad.">
+        <meta name="keywords" content="Matriz de Eisenhower, matriz de prioridades, urgente e importante, productividad, gestión del tiempo, Stephen Covey, cuadrantes, priorizar tareas">
+        <meta name="author" content="edalvb">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="https://edalvb.github.io/eisenhower_matrix/">
+        <link rel="alternate" href="https://edalvb.github.io/eisenhower_matrix/" hreflang="es" />
+        <meta name="theme-color" content="#0f0c29">
+    
+        <!-- Open Graph -->
+        <meta property="og:title" content="Matriz de Eisenhower: prioriza tus tareas por urgencia e importancia">
+        <meta property="og:description" content="Herramienta gratis para organizar tareas por urgencia e importancia. Arrastra y suelta, guarda tu matriz como imagen y enfócate en lo que importa.">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://edalvb.github.io/eisenhower_matrix/">
+        <meta property="og:image" content="https://edalvb.github.io/eisenhower_matrix/assets/logo.png">
+        <meta property="og:image:alt" content="Matriz de Eisenhower - Prioriza tus tareas">
+        <meta property="og:site_name" content="Matriz de Eisenhower">
+        <meta property="og:locale" content="es_ES">
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Matriz de Eisenhower: prioriza tus tareas por urgencia e importancia">
+        <meta name="twitter:description" content="Organiza tareas por urgencia e importancia. Gratis y sin registro.">
+        <meta name="twitter:image" content="https://edalvb.github.io/eisenhower_matrix/assets/logo.png">
+
+        <!-- Structured Data -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Matriz de Eisenhower",
+            "url": "https://edalvb.github.io/eisenhower_matrix/",
+            "applicationCategory": "Productivity",
+            "operatingSystem": "Web",
+            "inLanguage": "es",
+            "description": "Matriz de Eisenhower online para priorizar tareas según urgencia e importancia. Arrastra y suelta y guarda como imagen.",
+            "image": "https://edalvb.github.io/eisenhower_matrix/assets/logo.png",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "keywords": [
+                "Matriz de Eisenhower",
+                "matriz de prioridades",
+                "urgente e importante",
+                "productividad",
+                "gestión del tiempo",
+                "Stephen Covey"
+            ]
+        }
+        </script>
+                <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    "mainEntity": [
+                        {
+                            "@type": "Question",
+                            "name": "¿Qué es la Matriz de Eisenhower?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Es un método de priorización que clasifica tareas por su urgencia e importancia en cuatro cuadrantes: hacer ahora, planificar, delegar y eliminar."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "¿Cómo usar esta herramienta?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Escribe una tarea, elige su urgencia e importancia y añádela. Arrastra y suelta entre cuadrantes y guarda la matriz como imagen."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "¿Cuáles son los beneficios?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Ayuda a enfocarte en lo importante, reducir distracciones y planificar mejor tu tiempo. Es gratuita y no requiere registro."
+                            }
+                        }
+                    ]
+                }
+                </script>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- html2canvas for saving as image -->
@@ -652,7 +736,7 @@
         <div class="absolute w-2 h-2 bg-pink-300 opacity-15 rounded-full animate-bounce" style="top: 30%; left: 50%; animation-delay: 4s;"></div>
     </div>
 
-    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-7xl relative z-10">
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-7xl relative z-10" role="main">
         <header class="text-center mb-8 sm:mb-12 animate-fade-in-up">
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 gradient-text">
                 Matriz de Prioridades
@@ -666,6 +750,12 @@
             </p>
             <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mt-4 rounded-full"></div>
         </header>
+
+        <noscript>
+            <div class="bg-yellow-500/10 border border-yellow-400/30 text-yellow-100 rounded-2xl p-4 mb-6">
+                Para usar la Matriz de Eisenhower necesitas activar JavaScript. Aquí va una breve explicación: clasifica tus tareas en cuatro cuadrantes según su urgencia e importancia. 1) Hacer ahora: urgente e importante. 2) Planificar: no urgente e importante. 3) Delegar: urgente y no importante. 4) Eliminar: no urgente ni importante.
+            </div>
+        </noscript>
 
         <!-- Enhanced Input Section -->
         <div class="glass-container rounded-3xl p-6 sm:p-8 mb-8 sm:mb-12 animate-fade-in-up stagger-animation">
@@ -873,6 +963,20 @@
             </button>
         </div>
         
+        <!-- SEO explanatory content -->
+        <section class="mt-10 sm:mt-14 animate-fade-in-up stagger-animation">
+            <div class="glass-container rounded-3xl p-6 sm:p-8">
+                <h2 class="text-2xl sm:text-3xl font-bold mb-3 glass-text-primary">Qué es la Matriz de Eisenhower</h2>
+                <p class="glass-text-secondary mb-4">La Matriz de Eisenhower (también llamada matriz urgente-importante) te ayuda a decidir y priorizar tareas en función de su urgencia e importancia. Divide tu lista en cuatro cuadrantes: hacer ahora, planificar, delegar y eliminar.</p>
+                <h3 class="text-xl font-semibold mb-2 glass-text-primary">Cómo usarla</h3>
+                <ul class="list-disc list-inside glass-text-secondary space-y-1">
+                    <li>Escribe tu tarea y selecciona urgencia e importancia.</li>
+                    <li>Arrastra y suelta para reorganizar entre cuadrantes.</li>
+                    <li>Guarda tu matriz como imagen para compartir o imprimir.</li>
+                </ul>
+            </div>
+        </section>
+
         <!-- Enhanced Footer -->
         <footer class="text-center mt-12 sm:mt-16 pb-6 animate-fade-in-up stagger-animation">
             <div class="glass-container rounded-2xl p-6 inline-block">

@@ -1,0 +1,4 @@
+# robots.txt for Matriz de Eisenhower
+User-agent: *
+Allow: /
+Sitemap: https://edalvb.github.io/eisenhower_matrix/sitemap.xml
