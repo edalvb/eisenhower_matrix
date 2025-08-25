@@ -1012,6 +1012,54 @@
             let draggedItem = null;
             let taskCounter = 0;
 
+            // Persistence (localStorage)
+            const STORAGE_KEY = 'eisenhower_matrix_state_v1';
+            const QUADRANT_IDS = ['q1-tasks','q2-tasks','q3-tasks','q4-tasks'];
+
+            const serializeState = () => {
+                const tasks = [];
+                QUADRANT_IDS.forEach(qid => {
+                    const container = document.getElementById(qid);
+                    if (!container) return;
+                    container.querySelectorAll('.task-item').forEach((el, idx) => {
+                        const textEl = el.querySelector('span.flex-grow');
+                        const text = textEl ? textEl.textContent : el.textContent || '';
+                        tasks.push({ quadrant: qid, text: text.trim(), order: idx });
+                    });
+                });
+                return { version: 1, tasks };
+            };
+
+            const saveState = () => {
+                try {
+                    const data = serializeState();
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                } catch (e) {
+                    // Fallback: ignore persistence errors silently
+                    console.warn('No se pudo guardar el estado:', e);
+                }
+            };
+
+            const loadState = () => {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (!raw) return null;
+                    const data = JSON.parse(raw);
+                    if (!data || !Array.isArray(data.tasks)) return null;
+                    return data;
+                } catch (e) {
+                    console.warn('No se pudo cargar el estado:', e);
+                    return null;
+                }
+            };
+
+            const clearQuadrants = () => {
+                QUADRANT_IDS.forEach(qid => {
+                    const container = document.getElementById(qid);
+                    if (container) container.innerHTML = '';
+                });
+            };
+
             // Helper functions to get selected values
             const getSelectedImportance = () => {
                 const selected = Array.from(importanceRadios).find(radio => radio.checked);
@@ -1028,7 +1076,7 @@
             if (urgencyRadios.length > 0) urgencyRadios[0].checked = true;
 
             // Enhanced task creation with animation
-            const createTaskElement = (taskText) => {
+        const createTaskElement = (taskText) => {
                 if (!taskText.trim()) return;
 
                 taskCounter++;
@@ -1052,7 +1100,7 @@
                     e.stopPropagation();
                     taskDiv.style.transform = 'scale(0.8) rotate(10deg)';
                     taskDiv.style.opacity = '0';
-                    setTimeout(() => taskDiv.remove(), 300);
+            setTimeout(() => { taskDiv.remove(); saveState(); }, 300);
                 });
                 
                 // Add drag and drop event listeners
@@ -1117,6 +1165,8 @@
                 setTimeout(() => targetQuadrant.style.background = '', 1000);
 
                 targetQuadrant.appendChild(taskElement);
+                // Persist changes
+                saveState();
                 
                 // Clear and reset form
                 taskInput.value = '';
@@ -1144,7 +1194,7 @@
                     quadrants.forEach(q => q.style.filter = 'brightness(1.2)');
                 });
                  
-                item.addEventListener('dragend', () => {
+        item.addEventListener('dragend', () => {
                     setTimeout(() => {
                         if (draggedItem) {
                             draggedItem.classList.remove('dragging');
@@ -1152,6 +1202,8 @@
                         }
                         // Reset quadrant filters
                         quadrants.forEach(q => q.style.filter = '');
+            // Persist after possible move
+            saveState();
                     }, 100);
                 });
 
@@ -1224,7 +1276,7 @@
                     }
                 }, { passive: false });
 
-                item.addEventListener('touchend', (e) => {
+        item.addEventListener('touchend', (e) => {
                     if (!draggedItem || draggedItem !== item) return;
                     
                     e.preventDefault();
@@ -1257,6 +1309,9 @@
                         if (navigator.vibrate) {
                             navigator.vibrate(100);
                         }
+
+            // Persist move
+            saveState();
                     }
 
                     // Reset variables
@@ -1287,7 +1342,7 @@
                     }
                 });
                 
-                quadrant.addEventListener('drop', (e) => {
+        quadrant.addEventListener('drop', (e) => {
                     e.preventDefault();
                     quadrant.classList.remove('drag-over');
                     
@@ -1299,6 +1354,9 @@
                         setTimeout(() => {
                             draggedItem.style.transform = '';
                         }, 200);
+
+            // Persist move
+            saveState();
                     }
                 });
             });
@@ -1319,6 +1377,9 @@
                     
                     // Reset counter
                     taskCounter = 0;
+
+                    // Clear persisted state
+                    try { localStorage.removeItem(STORAGE_KEY); } catch {}
                 }
             };
 
@@ -1444,23 +1505,37 @@
             style.textContent = shakeCSS;
             document.head.appendChild(style);
 
-            // Initialize with enhanced example tasks
-            const initialTasks = [
-                { text: '🚨 Resolver crisis del cliente principal', quadrant: 'q1-tasks' },
-                { text: '📈 Planificar estrategia del próximo trimestre', quadrant: 'q2-tasks' },
-                { text: '📧 Responder correos no críticos', quadrant: 'q3-tasks' },
-                { text: '📱 Revisar redes sociales', quadrant: 'q4-tasks' }
-            ];
-
-            // Add initial tasks with staggered animation
-            initialTasks.forEach((task, index) => {
-                setTimeout(() => {
-                    const taskElement = createTaskElement(task.text);
-                    if (taskElement) {
-                        document.getElementById(task.quadrant).appendChild(taskElement);
-                    }
-                }, index * 200);
-            });
+            // Load saved state or fallback to example tasks
+            const saved = loadState();
+            if (saved && saved.tasks && saved.tasks.length) {
+                clearQuadrants();
+                // Restore tasks in saved order
+                saved.tasks
+                    .sort((a,b) => (a.order ?? 0) - (b.order ?? 0))
+                    .forEach((t, idx) => {
+                        setTimeout(() => {
+                            const el = createTaskElement(t.text);
+                            const container = document.getElementById(t.quadrant);
+                            if (el && container) container.appendChild(el);
+                        }, Math.min(idx, 8) * 50); // subtle stagger on load
+                    });
+            } else {
+                // Initialize with enhanced example tasks (not persisted until user action)
+                const initialTasks = [
+                    { text: '🚨 Resolver crisis del cliente principal', quadrant: 'q1-tasks' },
+                    { text: '📈 Planificar estrategia del próximo trimestre', quadrant: 'q2-tasks' },
+                    { text: '📧 Responder correos no críticos', quadrant: 'q3-tasks' },
+                    { text: '📱 Revisar redes sociales', quadrant: 'q4-tasks' }
+                ];
+                initialTasks.forEach((task, index) => {
+                    setTimeout(() => {
+                        const taskElement = createTaskElement(task.text);
+                        if (taskElement) {
+                            document.getElementById(task.quadrant).appendChild(taskElement);
+                        }
+                    }, index * 200);
+                });
+            }
 
             // Focus input on load
             setTimeout(() => taskInput.focus(), 1000);
